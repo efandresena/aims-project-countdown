@@ -52,11 +52,11 @@ body {
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: #cc3333;
   text-shadow: 0 0 20px rgba(200, 40, 40, 0.4), 0 0 60px rgba(200, 40, 40, 0.1);
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.3rem;
   letter-spacing: 4px;
   text-transform: uppercase;
   animation: flicker 3s infinite;
@@ -69,8 +69,8 @@ body {
 
 .subtitle {
   color: rgba(200, 150, 130, 0.45);
-  font-size: 0.85rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.15rem;
+  margin-bottom: 2rem;
   letter-spacing: 2px;
 }
 
@@ -89,25 +89,25 @@ body {
 }
 
 .time-value {
-  font-size: 3.5rem;
+  font-size: 5rem;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 4px;
+  letter-spacing: 6px;
   line-height: 1.1;
   color: #ff3333;
-  text-shadow: 0 0 15px rgba(255, 30, 30, 0.5), 0 0 40px rgba(255, 0, 0, 0.15);
+  text-shadow: 0 0 20px rgba(255, 30, 30, 0.5), 0 0 60px rgba(255, 0, 0, 0.15);
 }
 
 .time-label {
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   color: rgba(200, 150, 120, 0.4);
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
 }
 
 .separator {
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: 300;
   color: rgba(200, 50, 50, 0.2);
   margin-bottom: 0.5rem;
@@ -154,13 +154,13 @@ body {
 }
 
 .progress-text {
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: rgba(200, 150, 130, 0.35);
   letter-spacing: 1px;
 }
 
 .reminder {
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   color: rgba(200, 150, 100, 0.65);
   margin-bottom: 0.7rem;
   font-weight: 500;
@@ -185,22 +185,22 @@ body {
 }
 
 #motivationalText {
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: rgba(220, 200, 190, 0.9);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
   line-height: 1.5;
   letter-spacing: 0.5px;
 }
 
 #motivationalAuthor {
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: rgba(200, 120, 100, 0.5);
   letter-spacing: 1px;
 }
 
 .quote-lang {
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 3px;
   color: rgba(200, 120, 100, 0.45);
@@ -208,7 +208,7 @@ body {
 }
 
 #quoteText {
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   font-style: italic;
   color: rgba(200, 180, 170, 0.75);
   margin-bottom: 0.3rem;
@@ -216,7 +216,7 @@ body {
 }
 
 #quoteAuthor {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: rgba(200, 150, 130, 0.3);
   letter-spacing: 0.5px;
 }
@@ -294,11 +294,24 @@ body {
   box-shadow: 0 6px 20px rgba(247, 151, 30, 0.4);
 }
 
+@media (min-width: 1600px) {
+  .title { font-size: 3rem; }
+  .subtitle { font-size: 1.4rem; }
+  .time-value { font-size: 6rem; }
+  .time-label { font-size: 1rem; }
+  .separator { font-size: 5rem; }
+  #motivationalText { font-size: 1.6rem; }
+  #quoteText { font-size: 1.5rem; }
+  .main-content { max-width: 800px; }
+}
+
 @media (max-width: 600px) {
   .main-content { padding: 1.2rem; }
-  .title { font-size: 1.3rem; }
-  .time-value { font-size: 2.5rem; }
+  .title { font-size: 1.6rem; }
+  .time-value { font-size: 2.8rem; }
   .time-block { min-width: unset; }
-  .separator { font-size: 1.5rem; }
+  .separator { font-size: 2rem; }
   .timer { gap: 0.3rem; }
+  #motivationalText { font-size: 1rem; }
+  #quoteText { font-size: 0.95rem; }
 }

@@ -165,10 +165,7 @@ const culturalQuotes = [
 const reminders = ["Don't forget to have fun!", "Don't forget to rest!"];
 
 const BG_IMAGES = [
-  'images/backgrounds/bg-2.jpg',
-  'images/backgrounds/bg-5.jpg',
-  'images/backgrounds/bg-6.jpg',
-  'images/backgrounds/bg-7.jpg',
+  'images/bg-muizenberg.jpg',
 ];
 
 function getTimeRemaining() {
@@ -229,7 +226,6 @@ function initBackground() {
   }
 
   const layer = document.getElementById('bgLayer');
-  let idx = 0;
 
   function setBg(i) {
     const img = document.createElement('img');
@@ -245,10 +241,6 @@ function initBackground() {
   }
 
   setBg(0);
-  setInterval(() => {
-    idx++;
-    setBg(idx);
-  }, 600000);
 }
 
 let tickCtx = null;
