@@ -295,23 +295,45 @@ body {
 }
 
 @media (min-width: 1600px) {
+  .main-content { max-width: 900px; padding: 3rem 4rem; }
   .title { font-size: 3rem; }
-  .subtitle { font-size: 1.4rem; }
+  .subtitle { font-size: 1.5rem; }
   .time-value { font-size: 6rem; }
-  .time-label { font-size: 1rem; }
+  .time-label { font-size: 1.1rem; }
   .separator { font-size: 5rem; }
+  .timer { gap: 1.2rem; }
   #motivationalText { font-size: 1.6rem; }
   #quoteText { font-size: 1.5rem; }
-  .main-content { max-width: 800px; }
 }
 
-@media (max-width: 600px) {
-  .main-content { padding: 1.2rem; }
+@media (max-width: 1024px) {
+  .main-content { max-width: 90vw; padding: 2rem; }
+  .time-value { font-size: 4rem; }
+  .title { font-size: 2rem; }
+}
+
+@media (max-width: 768px) {
+  .main-content { padding: 1.5rem; max-width: 95vw; }
   .title { font-size: 1.6rem; }
-  .time-value { font-size: 2.8rem; }
-  .time-block { min-width: unset; }
-  .separator { font-size: 2rem; }
-  .timer { gap: 0.3rem; }
-  #motivationalText { font-size: 1rem; }
-  #quoteText { font-size: 0.95rem; }
+  .time-value { font-size: 3rem; }
+  .time-label { font-size: 0.75rem; }
+  .separator { font-size: 2.5rem; }
+  .timer { gap: 0.4rem; }
+  #motivationalText { font-size: 1.1rem; }
+  #quoteText { font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .main-content { padding: 1rem; }
+  .title { font-size: 1.2rem; letter-spacing: 2px; }
+  .subtitle { font-size: 0.9rem; }
+  .time-value { font-size: 2.2rem; letter-spacing: 3px; }
+  .time-label { font-size: 0.6rem; letter-spacing: 2px; }
+  .separator { font-size: 1.8rem; }
+  .timer { gap: 0.25rem; }
+  #motivationalText { font-size: 0.9rem; }
+  #quoteText { font-size: 0.85rem; }
+  .quote-box { padding: 0.4rem 0.5rem; }
+  .reminder { font-size: 0.9rem; }
+  .progress-section { max-width: 100%; }
 }

@@ -223,23 +223,21 @@ function initBackground() {
 
   const layer = document.getElementById('bgLayer');
 
-  function setBg(i) {
+  allImages.forEach((src, i) => {
     const img = document.createElement('img');
-    img.src = allImages[i % allImages.length];
+    if (i === 0) img.classList.add('active');
+    img.src = src;
     img.alt = '';
-    img.loading = 'lazy';
-    img.onload = () => {
-      layer.querySelectorAll('img').forEach(el => el.classList.remove('active'));
-      img.classList.add('active');
-    };
     img.onerror = () => img.remove();
     layer.appendChild(img);
-  }
+  });
 
-  setBg(0);
+  let idx = 0;
   setInterval(() => {
-    const next = layer.querySelectorAll('img').length;
-    setBg(next);
+    const imgs = layer.querySelectorAll('img');
+    imgs.forEach(el => el.classList.remove('active'));
+    idx = (idx + 1) % imgs.length;
+    imgs[idx].classList.add('active');
   }, 5000);
 }
 
