@@ -295,15 +295,25 @@ function playDing(type) {
   } catch (e) {}
 }
 
+let seenMotivational = [];
+let seenCultural = [];
+
+function pickRandom(arr, seen) {
+  const pool = arr.filter((_, i) => !seen.includes(i));
+  if (pool.length === 0) seen.length = 0;
+  const available = arr.filter((_, i) => !seen.includes(i));
+  const idx = arr.indexOf(available[Math.floor(Math.random() * available.length)]);
+  seen.push(idx);
+  return arr[idx];
+}
+
 function updateReminder() {
-  const hour = getCurrentHour();
-  document.getElementById('reminder').textContent = reminders[hour % reminders.length];
+  document.getElementById('reminder').textContent = reminders[Math.floor(Math.random() * reminders.length)];
 }
 
 function updateQuote() {
-  const hour = getCurrentHour();
-  const m = motivationalQuotes[hour % motivationalQuotes.length];
-  const c = culturalQuotes[hour % culturalQuotes.length];
+  const m = pickRandom(motivationalQuotes, seenMotivational);
+  const c = pickRandom(culturalQuotes, seenCultural);
   document.getElementById('motivationalText').textContent = `"${m.text}"`;
   document.getElementById('motivationalAuthor').textContent = `— ${m.author}`;
   document.getElementById('quoteLang').textContent = c.lang;
@@ -317,8 +327,6 @@ function checkHourChange() {
 
   if (currHour !== prevHour) {
     localStorage.setItem('last_hour', String(currHour));
-    updateQuote();
-    updateReminder();
     loadFunnyImages();
     if (prevHour !== -1) {
       playDing('hour');
@@ -375,6 +383,11 @@ updateQuote();
 updateReminder();
 checkHourChange();
 checkDayChange();
+
+setInterval(() => {
+  updateQuote();
+  updateReminder();
+}, 60000);
 
 let prevHour = getCurrentHour();
 
