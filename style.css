@@ -173,6 +173,13 @@ body {
   min-height: 1.2rem;
 }
 
+.quotes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
 .quote-box {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 12px;
@@ -183,6 +190,28 @@ body {
   flex-direction: column;
   justify-content: center;
   width: 100%;
+}
+
+.motivational-quote {
+  border-left: 3px solid #f7971e;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.motivational-quote #motivationalText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.3rem;
+  line-height: 1.5;
+}
+
+.motivational-quote #motivationalAuthor {
+  font-size: 0.75rem;
+  color: rgba(255, 200, 100, 0.6);
+}
+
+.cultural-quote {
+  border-left: 3px solid rgba(255, 255, 255, 0.15);
 }
 
 .quote-lang {
