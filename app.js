@@ -238,7 +238,7 @@ function initBackground() {
     imgs.forEach(el => el.classList.remove('active'));
     idx = (idx + 1) % imgs.length;
     imgs[idx].classList.add('active');
-  }, 5000);
+  }, 10000);
 }
 
 let tickCtx = null;
