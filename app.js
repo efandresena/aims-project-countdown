@@ -2,7 +2,7 @@ const TARGET = new Date('2026-06-11T23:59:59');
 const START = new Date('2026-05-12T00:00:00');
 const STORAGE_KEY = 'countdown_notes';
 const LAST_DAY_KEY = 'countdown_last_day';
-const FUNNY_SEEN_KEY = 'funny_seen';
+
 
 const motivationalQuotes = [
   { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -164,9 +164,7 @@ const culturalQuotes = [
 
 const reminders = ["Don't forget to have fun!", "Don't forget to rest!"];
 
-const BG_IMAGES = [
-  'images/bg-muizenberg.jpg',
-];
+
 
 function getTimeRemaining() {
   const now = new Date();
@@ -242,26 +240,6 @@ function initBackground() {
 
   pickAndShow();
   setInterval(pickAndShow, 13000);
-}
-
-  const layer = document.getElementById('bgLayer');
-
-  allImages.forEach((src, i) => {
-    const img = document.createElement('img');
-    if (i === 0) img.classList.add('active');
-    img.src = src;
-    img.alt = '';
-    img.onerror = () => img.remove();
-    layer.appendChild(img);
-  });
-
-  let idx = 0;
-  setInterval(() => {
-    const imgs = layer.querySelectorAll('img');
-    imgs.forEach(el => el.classList.remove('active'));
-    idx = (idx + 1) % imgs.length;
-    imgs[idx].classList.add('active');
-  }, 10000);
 }
 
 let tickCtx = null;
@@ -340,7 +318,6 @@ function checkHourChange() {
 
   if (currHour !== prevHour) {
     localStorage.setItem('last_hour', String(currHour));
-    loadFunnyImages();
     if (prevHour !== -1) {
       playDing('hour');
     }
