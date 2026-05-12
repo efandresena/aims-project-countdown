@@ -8,58 +8,56 @@
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-  <div class="layout">
-    <div class="side-gallery left-gallery" id="leftGallery"></div>
-    <div class="main-content">
-      <img src="images/aims_logo-1.png" alt="AIMS Logo" class="logo" />
+  <div class="bg-layer" id="bgLayer"></div>
 
-      <h1 class="title">AIMS Final Project</h1>
-      <p class="subtitle">Countdown to June 11 &mdash; <span id="daysRemain"></span> days to go</p>
+  <div class="main-content">
+    <img src="images/aims_logo-1.png" alt="AIMS Logo" class="logo" />
 
-      <div class="timer">
-        <div class="time-block">
-          <span class="time-value" id="days">00</span>
-          <span class="time-label">Days</span>
-        </div>
-        <span class="separator">:</span>
-        <div class="time-block">
-          <span class="time-value" id="hours">00</span>
-          <span class="time-label">Hours</span>
-        </div>
-        <span class="separator">:</span>
-        <div class="time-block">
-          <span class="time-value" id="minutes">00</span>
-          <span class="time-label">Minutes</span>
-        </div>
-        <span class="separator">:</span>
-        <div class="time-block">
-          <span class="time-value" id="seconds">00</span>
-          <span class="time-label">Seconds</span>
-        </div>
+    <h1 class="title">AIMS Final Project</h1>
+    <p class="subtitle">Countdown to June 11 &mdash; <span id="daysRemain"></span> days to go</p>
+
+    <div class="timer">
+      <div class="time-block">
+        <span class="time-value" id="days">00</span>
+        <span class="time-label">Days</span>
       </div>
-
-      <div class="progress-section">
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <p class="progress-text" id="progressText">0% complete</p>
+      <span class="separator">:</span>
+      <div class="time-block">
+        <span class="time-value" id="hours">00</span>
+        <span class="time-label">Hours</span>
       </div>
-
-      <div class="reminder" id="reminder"></div>
-
-      <div class="quotes-container">
-        <div class="quote-box motivational-quote" id="motivationalBox">
-          <p id="motivationalText"></p>
-          <p id="motivationalAuthor"></p>
-        </div>
-        <div class="quote-box cultural-quote" id="culturalBox">
-          <p id="quoteLang" class="quote-lang"></p>
-          <p id="quoteText"></p>
-          <p id="quoteAuthor"></p>
-        </div>
+      <span class="separator">:</span>
+      <div class="time-block">
+        <span class="time-value" id="minutes">00</span>
+        <span class="time-label">Minutes</span>
+      </div>
+      <span class="separator">:</span>
+      <div class="time-block">
+        <span class="time-value" id="seconds">00</span>
+        <span class="time-label">Seconds</span>
       </div>
     </div>
-    <div class="side-gallery right-gallery" id="rightGallery"></div>
+
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <p class="progress-text" id="progressText">0% complete</p>
+    </div>
+
+    <div class="reminder" id="reminder"></div>
+
+    <div class="quotes-container">
+      <div class="quote-box" id="motivationalBox">
+        <p id="motivationalText"></p>
+        <p id="motivationalAuthor"></p>
+      </div>
+      <div class="quote-box" id="culturalBox">
+        <p id="quoteLang" class="quote-lang"></p>
+        <p id="quoteText"></p>
+        <p id="quoteAuthor"></p>
+      </div>
+    </div>
   </div>
 
   <div id="reflectionOverlay" class="overlay hidden">

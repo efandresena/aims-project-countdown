@@ -218,54 +218,37 @@ function getCurrentHour() {
   return new Date().getHours();
 }
 
-function initGallery(containerId, images, intervalMs) {
-  const gallery = document.getElementById(containerId);
-  images.forEach((src, i) => {
+function initBackground() {
+  const allImages = [...BG_IMAGES];
+
+  const seen = JSON.parse(localStorage.getItem(FUNNY_SEEN_KEY) || '[]');
+  for (let i = 0; i < 31; i++) {
+    for (const ext of ['jpg', 'jpeg', 'png']) {
+      allImages.push(`images/funny_images/funny-${i + 1}.${ext}`);
+    }
+  }
+
+  const layer = document.getElementById('bgLayer');
+  let idx = 0;
+
+  function setBg(i) {
     const img = document.createElement('img');
-    img.className = 'gallery-img' + (i === 0 ? ' active' : '');
-    img.src = src;
+    img.src = allImages[i % allImages.length];
     img.alt = '';
     img.loading = 'lazy';
-    gallery.appendChild(img);
-  });
+    img.onload = () => {
+      layer.querySelectorAll('img').forEach(el => el.classList.remove('active'));
+      img.classList.add('active');
+    };
+    img.onerror = () => img.remove();
+    layer.appendChild(img);
+  }
 
-  let idx = 0;
+  setBg(0);
   setInterval(() => {
-    const imgs = gallery.querySelectorAll('.gallery-img');
-    imgs.forEach(img => img.classList.remove('active'));
-    idx = (idx + 1) % imgs.length;
-    imgs[idx].classList.add('active');
-  }, intervalMs);
-}
-
-function loadFunnyImages() {
-  const seen = JSON.parse(localStorage.getItem(FUNNY_SEEN_KEY) || '[]');
-  const count = 31;
-  const all = Array.from({ length: count }, (_, i) => `images/funny_images/funny-${i + 1}.jpg`);
-  const allFormats = [
-    ...all,
-    ...Array.from({ length: count }, (_, i) => `images/funny_images/funny-${i + 1}.jpeg`),
-    ...Array.from({ length: count }, (_, i) => `images/funny_images/funny-${i + 1}.png`),
-  ];
-
-  const unseen = allFormats.filter(p => !seen.includes(p));
-  if (unseen.length === 0) return;
-
-  const chosen = unseen[Math.floor(Math.random() * unseen.length)];
-  seen.push(chosen);
-  localStorage.setItem(FUNNY_SEEN_KEY, JSON.stringify(seen));
-
-  const gallery = document.getElementById('rightGallery');
-  const img = document.createElement('img');
-  img.className = 'gallery-img';
-  img.src = chosen;
-  img.alt = 'Funny';
-  img.loading = 'lazy';
-  img.onerror = () => img.remove();
-  img.onload = () => {
-    gallery.appendChild(img);
-    setTimeout(() => img.classList.add('active'), 100);
-  };
+    idx++;
+    setBg(idx);
+  }, 600000);
 }
 
 function playDing(type) {
@@ -368,9 +351,7 @@ if ('Notification' in window && Notification.permission === 'default') {
   Notification.requestPermission();
 }
 
-initGallery('leftGallery', BG_IMAGES, 8000);
-initGallery('rightGallery', BG_IMAGES.slice().reverse(), 10000);
-loadFunnyImages();
+initBackground();
 
 updateDisplay();
 updateQuote();
