@@ -5,9 +5,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #0a0a14;
-  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  background: #050508;
+  color: #e0d0c0;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -51,26 +51,27 @@ body {
   text-align: center;
 }
 
-.logo {
-  max-width: 150px;
-  height: auto;
-  margin-bottom: 0.5rem;
-}
-
 .title {
   font-size: 1.8rem;
   font-weight: 800;
-  background: linear-gradient(90deg, #f7971e, #ffd200);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #cc3333;
+  text-shadow: 0 0 20px rgba(200, 40, 40, 0.4), 0 0 60px rgba(200, 40, 40, 0.1);
   margin-bottom: 0.15rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  animation: flicker 3s infinite;
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.6; }
 }
 
 .subtitle {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(200, 150, 130, 0.45);
   font-size: 0.85rem;
   margin-bottom: 1.5rem;
+  letter-spacing: 2px;
 }
 
 .timer {
@@ -88,29 +89,27 @@ body {
 }
 
 .time-value {
-  font-size: 3.2rem;
-  font-weight: 800;
+  font-size: 3.5rem;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   line-height: 1.1;
-  background: linear-gradient(180deg, #fff 60%, rgba(255, 255, 255, 0.5));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ff3333;
+  text-shadow: 0 0 15px rgba(255, 30, 30, 0.5), 0 0 40px rgba(255, 0, 0, 0.15);
 }
 
 .time-label {
   font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 3px;
+  color: rgba(200, 150, 120, 0.4);
   margin-top: 0.15rem;
 }
 
 .separator {
   font-size: 2.5rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(200, 50, 50, 0.2);
   margin-bottom: 0.5rem;
 }
 
@@ -148,22 +147,24 @@ body {
 .progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #f7971e, #ffd200);
+  background: #cc3333;
   border-radius: 2px;
+  box-shadow: 0 0 8px rgba(200, 40, 40, 0.4);
   transition: width 1s ease;
 }
 
 .progress-text {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(200, 150, 130, 0.35);
+  letter-spacing: 1px;
 }
 
 .reminder {
   font-size: 0.8rem;
-  color: rgba(255, 200, 100, 0.75);
+  color: rgba(200, 150, 100, 0.65);
   margin-bottom: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   min-height: 1.2rem;
 }
 
@@ -186,35 +187,38 @@ body {
 #motivationalText {
   font-size: 1rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(220, 200, 190, 0.9);
   margin-bottom: 0.3rem;
   line-height: 1.5;
+  letter-spacing: 0.5px;
 }
 
 #motivationalAuthor {
   font-size: 0.75rem;
-  color: rgba(255, 200, 100, 0.6);
+  color: rgba(200, 120, 100, 0.5);
+  letter-spacing: 1px;
 }
 
 .quote-lang {
   font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 3px;
-  color: rgba(255, 200, 100, 0.45);
+  color: rgba(200, 120, 100, 0.45);
   margin-bottom: 0.3rem;
 }
 
 #quoteText {
   font-size: 0.95rem;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(200, 180, 170, 0.75);
   margin-bottom: 0.3rem;
   line-height: 1.6;
 }
 
 #quoteAuthor {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(200, 150, 130, 0.3);
+  letter-spacing: 0.5px;
 }
 
 .overlay {
@@ -293,9 +297,8 @@ body {
 @media (max-width: 600px) {
   .main-content { padding: 1.2rem; }
   .title { font-size: 1.3rem; }
-  .time-value { font-size: 2.2rem; }
+  .time-value { font-size: 2.5rem; }
   .time-block { min-width: unset; }
   .separator { font-size: 1.5rem; }
   .timer { gap: 0.3rem; }
-  .logo { max-width: 110px; }
 }

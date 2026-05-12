@@ -251,6 +251,23 @@ function initBackground() {
   }, 600000);
 }
 
+let tickCtx = null;
+function playTick() {
+  try {
+    if (!tickCtx) tickCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = tickCtx.createOscillator();
+    const gain = tickCtx.createGain();
+    osc.connect(gain);
+    gain.connect(tickCtx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, tickCtx.currentTime);
+    gain.gain.setValueAtTime(0.08, tickCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, tickCtx.currentTime + 0.04);
+    osc.start(tickCtx.currentTime);
+    osc.stop(tickCtx.currentTime + 0.04);
+  } catch (e) {}
+}
+
 function playDing(type) {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -363,6 +380,7 @@ let prevHour = getCurrentHour();
 
 setInterval(() => {
   updateDisplay();
+  playTick();
   const h = getCurrentHour();
   if (h !== prevHour) {
     prevHour = h;
