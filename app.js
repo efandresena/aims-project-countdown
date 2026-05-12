@@ -216,10 +216,33 @@ function getCurrentHour() {
 }
 
 function initBackground() {
-  const allImages = [];
-  for (let i = 1; i <= 16; i++) {
-    allImages.push(`images/rotating/img-${i}.jpg`);
+  const isPortrait = window.innerWidth <= 768;
+  const layer = document.getElementById('bgLayer');
+  const used = [];
+
+  function pickAndShow() {
+    const pool = Array.from({ length: 49 }, (_, i) => i + 1);
+    let available = pool.filter(i => !used.includes(i));
+    if (available.length === 0) { used.length = 0; available = pool; }
+
+    const idx = available[Math.floor(Math.random() * available.length)];
+    used.push(idx);
+
+    const src = `images/rotating/img-${String(idx).padStart(3, '0')}.jpg`;
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.onload = () => {
+      layer.querySelectorAll('img').forEach(el => el.classList.remove('active'));
+      img.classList.add('active');
+    };
+    img.onerror = () => img.remove();
+    layer.appendChild(img);
   }
+
+  pickAndShow();
+  setInterval(pickAndShow, 13000);
+}
 
   const layer = document.getElementById('bgLayer');
 
