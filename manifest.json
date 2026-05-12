@@ -1,0 +1,9 @@
+{
+  "name": "Countdown to June 11",
+  "short_name": "Countdown",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0c29",
+  "theme_color": "#302b63",
+  "icons": []
+}
