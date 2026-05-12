@@ -191,7 +191,7 @@ function updateDisplay() {
   document.getElementById('hours').textContent = pad(t.hours);
   document.getElementById('minutes').textContent = pad(t.minutes);
   document.getElementById('seconds').textContent = pad(t.seconds);
-  document.getElementById('daysRemain').textContent = t.days;
+
 
   if (t.total === 0) {
     document.querySelector('.timer').innerHTML = '<div class="times-up">TIME\'S UP DUMBASS!</div>';
