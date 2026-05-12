@@ -216,13 +216,9 @@ function getCurrentHour() {
 }
 
 function initBackground() {
-  const allImages = [...BG_IMAGES];
-
-  const seen = JSON.parse(localStorage.getItem(FUNNY_SEEN_KEY) || '[]');
-  for (let i = 0; i < 31; i++) {
-    for (const ext of ['jpg', 'jpeg', 'png']) {
-      allImages.push(`images/funny_images/funny-${i + 1}.${ext}`);
-    }
+  const allImages = [];
+  for (let i = 1; i <= 16; i++) {
+    allImages.push(`images/rotating/img-${i}.jpg`);
   }
 
   const layer = document.getElementById('bgLayer');
@@ -241,6 +237,10 @@ function initBackground() {
   }
 
   setBg(0);
+  setInterval(() => {
+    const next = layer.querySelectorAll('img').length;
+    setBg(next);
+  }, 5000);
 }
 
 let tickCtx = null;
