@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIMS Final Project - Countdown</title>
+  <title>Graduation Day</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
 </head>
@@ -11,8 +11,8 @@
   <div class="bg-layer" id="bgLayer"></div>
 
   <div class="main-content">
-    <h1 class="title">AIMS Final Project</h1>
-    <p class="subtitle">Final Submission day 11 June</p>
+    <h1 class="title">Graduation Day</h1>
+    <p class="subtitle">Congratulations Class of 2026!</p>
 
     <div class="timer">
       <div class="time-block">
@@ -50,20 +50,18 @@
         <p id="motivationalText"></p>
         <p id="motivationalAuthor"></p>
       </div>
-      <div class="quote-box" id="culturalBox">
-        <p id="shortPhrase"></p>
-        <p id="phraseLang" class="phrase-lang"></p>
-      </div>
     </div>
   </div>
+
+  <audio id="bgMusic" preload="auto" loop playsinline style="display:none"></audio>
 
   <button id="muteBtn" class="mute-btn">🔊</button>
 
   <div id="reflectionOverlay" class="overlay hidden">
     <div class="overlay-content">
       <h2>Day <span id="overlayDay">1</span> Complete!</h2>
-      <p>What have you done today? How is your research going?</p>
-      <textarea id="dailyNote" placeholder="Write your reflection here..." rows="3"></textarea>
+      <p>Another day closer to graduation! Keep pushing forward!</p>
+      <textarea id="dailyNote" placeholder="Write about your day..." rows="3"></textarea>
       <button id="saveNote" class="btn">Save & Continue</button>
     </div>
   </div>

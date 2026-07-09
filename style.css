@@ -56,8 +56,8 @@ body {
 .title {
   font-size: clamp(1.4rem, 4vw, 3.2rem);
   font-weight: 800;
-  color: #cc3333;
-  text-shadow: 0 0 20px rgba(200, 40, 40, 0.4), 0 0 60px rgba(200, 40, 40, 0.1);
+  color: #33cc33;
+  text-shadow: 0 0 20px rgba(40, 200, 40, 0.4), 0 0 60px rgba(40, 200, 40, 0.1);
   margin-bottom: 0.3rem;
   letter-spacing: clamp(2px, 0.5vw, 6px);
   text-transform: uppercase;
@@ -96,8 +96,8 @@ body {
   font-variant-numeric: tabular-nums;
   letter-spacing: clamp(3px, 0.8vw, 8px);
   line-height: 1.1;
-  color: #ff3333;
-  text-shadow: 0 0 20px rgba(255, 30, 30, 0.5), 0 0 60px rgba(255, 0, 0, 0.15);
+  color: #33ff33;
+  text-shadow: 0 0 20px rgba(50, 255, 50, 0.5), 0 0 60px rgba(0, 255, 0, 0.15);
 }
 
 .time-label {
@@ -111,14 +111,14 @@ body {
 .separator {
   font-size: clamp(2rem, 6vw, 5rem);
   font-weight: 300;
-  color: rgba(220, 80, 80, 0.4);
+  color: rgba(80, 220, 80, 0.4);
   margin-bottom: 0.5rem;
 }
 
 .times-up {
   font-size: 2.5rem;
   font-weight: 900;
-  background: linear-gradient(90deg, #ff4444, #ff6b6b);
+  background: linear-gradient(90deg, #44ff44, #6bff6b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -149,9 +149,9 @@ body {
 .progress-fill {
   height: 100%;
   width: 0%;
-  background: #cc3333;
+  background: #33cc33;
   border-radius: 2px;
-  box-shadow: 0 0 8px rgba(200, 40, 40, 0.4);
+  box-shadow: 0 0 8px rgba(40, 200, 40, 0.4);
   transition: width 1s ease;
 }
 
@@ -215,56 +215,6 @@ body {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-}
-
-.quote-lang {
-  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: rgba(230, 160, 130, 0.7);
-  margin-bottom: 0.2rem;
-}
-
-#quoteText {
-  font-size: clamp(0.9rem, 1.8vw, 1.4rem);
-  font-style: italic;
-  color: rgba(200, 180, 170, 0.75);
-  margin-bottom: 0.2rem;
-  line-height: 1.5;
-}
-
-#quoteAuthor {
-  font-size: clamp(0.7rem, 1.2vw, 0.95rem);
-  color: rgba(220, 180, 160, 0.55);
-  letter-spacing: 0.5px;
-}
-
-#motivationalAuthor {
-  font-size: 1rem;
-  color: rgba(220, 160, 140, 0.7);
-  letter-spacing: 1px;
-}
-
-.quote-lang {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: rgba(230, 160, 130, 0.7);
-  margin-bottom: 0.3rem;
-}
-
-#quoteText {
-  font-size: 1.2rem;
-  font-style: italic;
-  color: rgba(200, 180, 170, 0.75);
-  margin-bottom: 0.3rem;
-  line-height: 1.6;
-}
-
-#quoteAuthor {
-  font-size: 0.95rem;
-  color: rgba(220, 180, 160, 0.55);
-  letter-spacing: 0.5px;
 }
 
 .overlay {
@@ -368,20 +318,6 @@ body {
 .mute-btn.muted {
   color: rgba(200, 60, 60, 0.6);
   border-color: rgba(200, 60, 60, 0.2);
-}
-
-.phrase-lang {
-  font-size: clamp(0.6rem, 1.2vw, 0.85rem);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: rgba(230, 160, 130, 0.5);
-  margin-top: 0.2rem;
-}
-
-#shortPhrase {
-  font-size: clamp(1rem, 2vw, 1.4rem);
-  color: rgba(220, 200, 190, 0.85);
-  line-height: 1.4;
 }
 
 @media (max-width: 480px) {

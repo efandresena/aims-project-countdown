@@ -65,7 +65,15 @@ const motivationalQuotes = [
 
 
 
-const reminders = ["Don't forget to have fun!", "Don't forget to rest!"];
+const reminders = [
+  "Congratulations on your graduation! 🎓",
+  "You did it! All your hard work paid off!",
+  "Thanks for the amazing journey!",
+  "Proud of everything you've accomplished!",
+  "Here's to your bright future!",
+  "Well done, graduate!",
+  "Celebrate your success today!",
+];
 
 
 
@@ -95,7 +103,7 @@ function updateDisplay() {
 
 
   if (t.total === 0) {
-    document.querySelector('.timer').innerHTML = '<div class="times-up">TIME\'S UP DUMBASS!</div>';
+    document.querySelector('.timer').innerHTML = '<div class="times-up">🎓 CONGRATULATIONS GRADUATE! 🎓</div>';
   }
 
   const totalMs = TARGET - START;
@@ -146,16 +154,37 @@ function initBackground() {
 }
 
 let tickCtx = null;
-let tickMuted = false;
+let audioMuted = false;
+const bgAudio = document.getElementById('bgMusic');
+const songFiles = ['audio/cZid3J36wH8.mp3', 'audio/btPJPFnesV4.mp3', 'audio/2ognf_oRQWM.mp3'];
+let songIndex = 0;
+
+function playNextSong() {
+  if (audioMuted) return;
+  bgAudio.src = songFiles[songIndex];
+  bgAudio.play().catch(() => {});
+  songIndex = (songIndex + 1) % songFiles.length;
+}
+
+bgAudio.addEventListener('ended', playNextSong);
 
 document.getElementById('muteBtn').onclick = () => {
-  tickMuted = !tickMuted;
-  document.getElementById('muteBtn').textContent = tickMuted ? '🔇' : '🔊';
-  document.getElementById('muteBtn').classList.toggle('muted', tickMuted);
+  audioMuted = !audioMuted;
+  document.getElementById('muteBtn').textContent = audioMuted ? '🔇' : '🔊';
+  document.getElementById('muteBtn').classList.toggle('muted', audioMuted);
+  if (audioMuted) {
+    bgAudio.pause();
+  } else {
+    if (bgAudio.paused) playNextSong();
+  }
 };
 
+document.addEventListener('click', () => {
+  if (bgAudio.paused && !audioMuted) playNextSong();
+}, { once: true });
+
 function playTick() {
-  if (tickMuted) return;
+  if (audioMuted) return;
   try {
     if (!tickCtx) tickCtx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = tickCtx.createOscillator();
@@ -198,68 +227,7 @@ function playDing(type) {
   } catch (e) {}
 }
 
-const shortPhrases = [
-  { text: "Bon courage", lang: "Français" },
-  { text: "Vitañao io eh", lang: "Malagasy" },
-  { text: "Kasu ce", lang: "Hausa" },
-  { text: "Jitahidi", lang: "Swahili" },
-  { text: "頑張って", lang: "Japanese" },
-  { text: "በረቱ", lang: "Amharic" },
-  { text: "Wo buɔ", lang: "Twi (Ghana)" },
-  { text: "Phambili", lang: "isiZulu (South Africa)" },
-  { text: "Qhubeka", lang: "isiXhosa (South Africa)" },
-  { text: "Sterkte", lang: "Afrikaans (South Africa)" },
-  { text: "Ma se", lang: "Yorùbá (Nigeria)" },
-  { text: "Gaa n'ihu", lang: "Igbo (Nigeria)" },
-  { text: "Endelevu", lang: "Kenyan Swahili" },
-  { text: "Aflika nyi ɖeka", lang: "Fon (Benin)" },
-  { text: "Bon champion", lang: "Français" },
-  { text: "Mandehova", lang: "Malagasy" },
-  { text: "Daure", lang: "Hausa" },
-  { text: "Pole pole", lang: "Swahili" },
-  { text: "がんばれ", lang: "Japanese" },
-  { text: "ይጠብቅህ", lang: "Amharic" },
-  { text: "Nkoso", lang: "Twi (Ghana)" },
-  { text: "Ungadinwa", lang: "isiZulu (South Africa)" },
-  { text: "Wozani", lang: "isiXhosa (South Africa)" },
-  { text: "Aanhou wen", lang: "Afrikaans (South Africa)" },
-  { text: "K'áre", lang: "Yorùbá (Nigeria)" },
-  { text: "Guzo", lang: "Igbo (Nigeria)" },
-  { text: "Haba na haba", lang: "Kenyan Swahili" },
-  { text: "Bonne chance", lang: "Français" },
-  { text: "Sambatra", lang: "Malagasy" },
-  { text: "Taimako", lang: "Hausa" },
-  { text: "Furaha", lang: "Swahili" },
-  { text: "やり遂げろ", lang: "Japanese" },
-  { text: "አይዞህ", lang: "Amharic" },
-  { text: "Mma", lang: "Twi (Ghana)" },
-  { text: "Hamba kahle", lang: "isiZulu (South Africa)" },
-  { text: "Hamba kakuhle", lang: "isiXhosa (South Africa)" },
-  { text: "Mooi so", lang: "Afrikaans (South Africa)" },
-  { text: "D'abo", lang: "Yorùbá (Nigeria)" },
-  { text: "Jisie ike", lang: "Igbo (Nigeria)" },
-  { text: "Subira", lang: "Kenyan Swahili" },
-  { text: "Allez-y", lang: "Français" },
-  { text: "Azafady ihany", lang: "Malagasy" },
-  { text: "Nagode", lang: "Hausa" },
-  { text: "Asante", lang: "Swahili" },
-  { text: "健闘を祈る", lang: "Japanese" },
-  { text: "ተስፋ አትቁረጥ", lang: "Amharic" },
-  { text: "Ɛyɛ", lang: "Twi (Ghana)" },
-  { text: "Yahle", lang: "isiZulu (South Africa)" },
-  { text: "Yomelela", lang: "isiXhosa (South Africa)" },
-  { text: "Op die regte pad", lang: "Afrikaans (South Africa)" },
-  { text: "E ku ise", lang: "Yorùbá (Nigeria)" },
-  { text: "Gbalịa", lang: "Igbo (Nigeria)" },
-  { text: "Pole pole ndio mwendo", lang: "Kenyan Swahili" },
-  { text: "De la force", lang: "Français" },
-  { text: "Mbola tsara", lang: "Malagasy" },
-  { text: "Sannu", lang: "Hausa" },
-  { text: "Nguvu", lang: "Swahili" },
-];
-
 let seenMotivational = [];
-let seenPhrases = [];
 
 function pickRandom(arr, seen) {
   const pool = arr.filter((_, i) => !seen.includes(i));
@@ -276,11 +244,8 @@ function updateReminder() {
 
 function updateQuote() {
   const m = pickRandom(motivationalQuotes, seenMotivational);
-  const p = pickRandom(shortPhrases, seenPhrases);
   document.getElementById('motivationalText').textContent = `"${m.text}"`;
   document.getElementById('motivationalAuthor').textContent = `— ${m.author}`;
-  document.getElementById('shortPhrase').textContent = p.text;
-  document.getElementById('phraseLang').textContent = p.lang;
 }
 
 function checkHourChange() {
@@ -306,7 +271,7 @@ function checkDayChange() {
 
     if (Notification.permission === 'granted') {
       new Notification('Day ' + currDay + ' Complete! 🎯', {
-        body: 'What have you done today? How is your research going?',
+        body: 'One day closer to graduation! Keep going!',
       });
     }
   } else if (currDay === 0 && prevDay === 0) {
