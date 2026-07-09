@@ -1,4 +1,4 @@
-const TARGET = new Date('2026-06-11T23:59:59');
+const TARGET = new Date('2026-07-16T11:00:00');
 const START = new Date('2026-05-12T00:00:00');
 const STORAGE_KEY = 'countdown_notes';
 const LAST_DAY_KEY = 'countdown_last_day';
