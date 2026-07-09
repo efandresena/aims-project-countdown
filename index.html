@@ -56,12 +56,19 @@
 
   <audio id="bgMusic" preload="auto" loop playsinline style="display:none"></audio>
 
-  <div id="reflectionOverlay" class="overlay hidden">
+  <div class="message-feed" id="messageFeed">
+    <div class="feed-title">🎓 Congratulations</div>
+    <div class="feed-scroll" id="feedScroll"></div>
+  </div>
+
+  <button id="sendMsgBtn" class="send-btn">✍️</button>
+
+  <div id="msgOverlay" class="overlay hidden">
     <div class="overlay-content">
-      <h2>Day <span id="overlayDay">1</span> Complete!</h2>
-      <p>Another day closer to graduation! Keep pushing forward!</p>
-      <textarea id="dailyNote" placeholder="Write about your day..." rows="3"></textarea>
-      <button id="saveNote" class="btn">Save & Continue</button>
+      <h2>Send Your Congratulations!</h2>
+      <input id="msgName" class="msg-input" placeholder="Your name" maxlength="50" />
+      <textarea id="msgText" class="msg-textarea" placeholder="Write a message to your teacher, friends, or anyone you wish..." rows="3" maxlength="500"></textarea>
+      <button id="submitMsg" class="btn">Send 💬</button>
     </div>
   </div>
 

@@ -255,6 +255,90 @@ body {
   width: 100%;
 }
 
+.message-feed {
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: clamp(200px, 20vw, 320px);
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.feed-title {
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: rgba(50, 255, 50, 0.5);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(50, 255, 50, 0.2);
+}
+
+.feed-scroll {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.feed-scroll-inner {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  animation: scrollUp 1s linear;
+}
+
+.feed-msg {
+  background: rgba(50, 255, 50, 0.06);
+  border: 1px solid rgba(50, 255, 50, 0.12);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+}
+
+.feed-msg-name {
+  font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+  color: rgba(50, 255, 50, 0.7);
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+
+.feed-msg-text {
+  font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+  color: rgba(220, 200, 190, 0.85);
+  line-height: 1.4;
+}
+
+.send-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  background: rgba(50, 255, 50, 0.1);
+  border: 1px solid rgba(50, 255, 50, 0.2);
+  color: rgba(50, 255, 50, 0.8);
+  font-size: 1.4rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+  backdrop-filter: blur(6px);
+}
+
+.send-btn:hover {
+  background: rgba(50, 255, 50, 0.2);
+  transform: scale(1.1);
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -279,36 +363,38 @@ body {
   padding: 2rem;
   max-width: 420px;
   width: 90%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(50, 255, 50, 0.15);
   text-align: center;
 }
 
 .overlay-content h2 {
   font-size: 1.5rem;
-  margin-bottom: 0.8rem;
-}
-
-.overlay-content p {
-  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 1rem;
+  color: rgba(50, 255, 50, 0.9);
+  text-shadow: 0 0 15px rgba(50, 255, 50, 0.3);
 }
 
-#dailyNote {
+.msg-input, .msg-textarea {
   width: 100%;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(50, 255, 50, 0.15);
   border-radius: 12px;
   padding: 0.8rem;
   color: #fff;
   font-size: 0.95rem;
   font-family: inherit;
-  resize: vertical;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   outline: none;
+  box-sizing: border-box;
 }
 
-#dailyNote:focus {
-  border-color: #f7971e;
+.msg-input:focus, .msg-textarea:focus {
+  border-color: rgba(50, 255, 50, 0.5);
+}
+
+.msg-textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
 .btn {

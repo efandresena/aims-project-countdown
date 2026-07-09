@@ -1,7 +1,6 @@
 const TARGET = new Date('2026-07-16T11:00:00');
 const START = new Date('2026-05-12T00:00:00');
-const STORAGE_KEY = 'countdown_notes';
-const LAST_DAY_KEY = 'countdown_last_day';
+const MSG_KEY = 'congrats_messages';
 
 
 const motivationalQuotes = [
@@ -113,17 +112,6 @@ function updateDisplay() {
   document.getElementById('progressText').textContent = pct.toFixed(1) + '% complete';
 }
 
-function getDaysElapsed() {
-  const now = new Date();
-  const diff = now - START;
-  if (diff < 0) return 0;
-  return Math.floor(diff / (1000 * 60 * 60 * 24));
-}
-
-function getCurrentHour() {
-  return new Date().getHours();
-}
-
 function initBackground() {
   const isPortrait = window.innerWidth <= 768;
   const layer = document.getElementById('bgLayer');
@@ -186,33 +174,6 @@ function playTick() {
   } catch (e) {}
 }
 
-function playDing(type) {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    if (type === 'day') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(523, ctx.currentTime);
-      osc.frequency.setValueAtTime(659, ctx.currentTime + 0.12);
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.45);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.45);
-    } else {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, ctx.currentTime);
-      gain.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.25);
-    }
-  } catch (e) {}
-}
-
 let seenMotivational = [];
 
 function pickRandom(arr, seen) {
@@ -234,59 +195,68 @@ function updateQuote() {
   document.getElementById('motivationalAuthor').textContent = `— ${m.author}`;
 }
 
-function checkHourChange() {
-  const prevHour = parseInt(localStorage.getItem('last_hour') || '-1', 10);
-  const currHour = getCurrentHour();
+const MSG_STORE = JSON.parse(localStorage.getItem(MSG_KEY) || '[]');
+const feedScroll = document.getElementById('feedScroll');
+let feedAnimId = null;
 
-  if (currHour !== prevHour) {
-    localStorage.setItem('last_hour', String(currHour));
-    if (prevHour !== -1) {
-      playDing('hour');
+function renderFeed() {
+  feedScroll.innerHTML = '';
+  if (MSG_STORE.length === 0) return;
+  const inner = document.createElement('div');
+  inner.className = 'feed-scroll-inner';
+  const frag = document.createDocumentFragment();
+  MSG_STORE.slice().reverse().forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'feed-msg';
+    el.innerHTML = `<div class="feed-msg-name">${escHtml(m.name)}</div><div class="feed-msg-text">${escHtml(m.text)}</div>`;
+    frag.appendChild(el);
+  });
+  inner.appendChild(frag);
+  feedScroll.appendChild(inner);
+  const h = inner.scrollHeight;
+  inner.style.height = h + 'px';
+  let pos = 0;
+  if (feedAnimId) cancelAnimationFrame(feedAnimId);
+  function animate() {
+    pos += 0.3;
+    if (pos >= h + feedScroll.clientHeight) {
+      pos = 0;
     }
+    inner.style.transform = `translateY(${Math.min(pos, h)}px)`;
+    feedAnimId = requestAnimationFrame(animate);
   }
+  animate();
 }
 
-function checkDayChange() {
-  const prevDay = parseInt(localStorage.getItem(LAST_DAY_KEY) || '0', 10);
-  const currDay = getDaysElapsed();
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
 
-  if (currDay > prevDay && currDay > 0) {
-    localStorage.setItem(LAST_DAY_KEY, String(currDay));
-    playDing('day');
-    showReflectionOverlay(currDay);
+document.getElementById('sendMsgBtn').onclick = () => {
+  document.getElementById('msgOverlay').classList.remove('hidden');
+};
 
-    if (Notification.permission === 'granted') {
-      new Notification('Day ' + currDay + ' Complete! 🎯', {
-        body: 'One day closer to graduation! Keep going!',
-      });
-    }
-  } else if (currDay === 0 && prevDay === 0) {
-    localStorage.setItem(LAST_DAY_KEY, '0');
+document.getElementById('submitMsg').onclick = () => {
+  const name = document.getElementById('msgName').value.trim();
+  const text = document.getElementById('msgText').value.trim();
+  if (!name || !text) return;
+  MSG_STORE.push({ name, text, date: Date.now() });
+  localStorage.setItem(MSG_KEY, JSON.stringify(MSG_STORE));
+  document.getElementById('msgName').value = '';
+  document.getElementById('msgText').value = '';
+  document.getElementById('msgOverlay').classList.add('hidden');
+  renderFeed();
+};
+
+document.getElementById('msgOverlay').onclick = (e) => {
+  if (e.target === e.currentTarget) {
+    document.getElementById('msgOverlay').classList.add('hidden');
   }
-}
+};
 
-function showReflectionOverlay(day) {
-  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  const existing = stored.find(e => e.day === day);
-  if (existing) return;
-
-  document.getElementById('overlayDay').textContent = day;
-  document.getElementById('dailyNote').value = '';
-  document.getElementById('reflectionOverlay').classList.remove('hidden');
-
-  document.getElementById('saveNote').onclick = () => {
-    const note = document.getElementById('dailyNote').value.trim();
-    if (note) {
-      stored.push({ day, note, date: new Date().toISOString() });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
-    }
-    document.getElementById('reflectionOverlay').classList.add('hidden');
-  };
-}
-
-if ('Notification' in window && Notification.permission === 'default') {
-  Notification.requestPermission();
-}
+renderFeed();
 
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
@@ -320,24 +290,13 @@ initBackground();
 updateDisplay();
 updateQuote();
 updateReminder();
-checkHourChange();
-checkDayChange();
 
 setInterval(() => {
   updateQuote();
   updateReminder();
 }, 60000);
 
-let prevHour = getCurrentHour();
-
 setInterval(() => {
   updateDisplay();
   playTick();
-  const h = getCurrentHour();
-  if (h !== prevHour) {
-    prevHour = h;
-    checkHourChange();
-  }
 }, 1000);
-
-setInterval(checkDayChange, 10000);
