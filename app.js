@@ -154,13 +154,11 @@ function initBackground() {
 }
 
 let tickCtx = null;
-let audioMuted = false;
 const bgAudio = document.getElementById('bgMusic');
 const songFiles = ['audio/cZid3J36wH8.mp3', 'audio/btPJPFnesV4.mp3', 'audio/2ognf_oRQWM.mp3'];
 let songIndex = 0;
 
 function playNextSong() {
-  if (audioMuted) return;
   bgAudio.src = songFiles[songIndex];
   bgAudio.play().catch(() => {});
   songIndex = (songIndex + 1) % songFiles.length;
@@ -168,23 +166,11 @@ function playNextSong() {
 
 bgAudio.addEventListener('ended', playNextSong);
 
-document.getElementById('muteBtn').onclick = () => {
-  audioMuted = !audioMuted;
-  document.getElementById('muteBtn').textContent = audioMuted ? '🔇' : '🔊';
-  document.getElementById('muteBtn').classList.toggle('muted', audioMuted);
-  if (audioMuted) {
-    bgAudio.pause();
-  } else {
-    if (bgAudio.paused) playNextSong();
-  }
-};
-
 document.addEventListener('click', () => {
-  if (bgAudio.paused && !audioMuted) playNextSong();
+  if (bgAudio.paused) playNextSong();
 }, { once: true });
 
 function playTick() {
-  if (audioMuted) return;
   try {
     if (!tickCtx) tickCtx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = tickCtx.createOscillator();
@@ -301,6 +287,33 @@ function showReflectionOverlay(day) {
 if ('Notification' in window && Notification.permission === 'default') {
   Notification.requestPermission();
 }
+
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+let cols, drops;
+
+function resizeMatrix() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  cols = Math.floor(canvas.width / 14);
+  drops = Array(cols).fill(1).map(() => Math.random() * canvas.height);
+}
+resizeMatrix();
+window.addEventListener('resize', resizeMatrix);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(5, 5, 8, 0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#0f0';
+  ctx.font = '12px monospace';
+  for (let i = 0; i < drops.length; i++) {
+    const char = String.fromCharCode(0x30A0 + Math.random() * 96);
+    ctx.fillText(char, i * 14, drops[i]);
+    if (drops[i] > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i] += 14;
+  }
+}
+setInterval(drawMatrix, 60);
 
 initBackground();
 
