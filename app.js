@@ -1,6 +1,6 @@
 const TARGET = new Date('2026-07-16T11:00:00');
 const START = new Date('2026-05-12T00:00:00');
-const MSG_KEY = 'congrats_messages';
+let started = false;
 
 
 const motivationalQuotes = [
@@ -154,9 +154,17 @@ function playNextSong() {
 
 bgAudio.addEventListener('ended', playNextSong);
 
-document.addEventListener('click', () => {
-  if (bgAudio.paused) playNextSong();
-}, { once: true });
+function startAudio() {
+  if (started) return;
+  started = true;
+  document.getElementById('startOverlay').classList.add('hidden');
+  playNextSong();
+  if (!tickCtx) tickCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+document.addEventListener('click', startAudio, { once: true });
+document.addEventListener('touchstart', startAudio, { once: true });
+document.addEventListener('keydown', startAudio, { once: true });
 
 function playTick() {
   try {
@@ -195,17 +203,26 @@ function updateQuote() {
   document.getElementById('motivationalAuthor').textContent = `— ${m.author}`;
 }
 
-const MSG_STORE = JSON.parse(localStorage.getItem(MSG_KEY) || '[]');
 const feedScroll = document.getElementById('feedScroll');
 let feedAnimId = null;
+const API = '/api/messages';
 
-function renderFeed() {
+async function loadMessages() {
+  try {
+    const res = await fetch(API);
+    if (!res.ok) return;
+    const msgs = await res.json();
+    renderFeed(msgs);
+  } catch {}
+}
+
+function renderFeed(msgs) {
   feedScroll.innerHTML = '';
-  if (MSG_STORE.length === 0) return;
+  if (!msgs || msgs.length === 0) return;
   const inner = document.createElement('div');
   inner.className = 'feed-scroll-inner';
   const frag = document.createDocumentFragment();
-  MSG_STORE.slice().reverse().forEach(m => {
+  msgs.forEach(m => {
     const el = document.createElement('div');
     el.className = 'feed-msg';
     el.innerHTML = `<div class="feed-msg-name">${escHtml(m.name)}</div><div class="feed-msg-text">${escHtml(m.text)}</div>`;
@@ -238,16 +255,21 @@ document.getElementById('sendMsgBtn').onclick = () => {
   document.getElementById('msgOverlay').classList.remove('hidden');
 };
 
-document.getElementById('submitMsg').onclick = () => {
+document.getElementById('submitMsg').onclick = async () => {
   const name = document.getElementById('msgName').value.trim();
   const text = document.getElementById('msgText').value.trim();
   if (!name || !text) return;
-  MSG_STORE.push({ name, text, date: Date.now() });
-  localStorage.setItem(MSG_KEY, JSON.stringify(MSG_STORE));
+  try {
+    await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, text }),
+    });
+  } catch {}
   document.getElementById('msgName').value = '';
   document.getElementById('msgText').value = '';
   document.getElementById('msgOverlay').classList.add('hidden');
-  renderFeed();
+  loadMessages();
 };
 
 document.getElementById('msgOverlay').onclick = (e) => {
@@ -256,7 +278,8 @@ document.getElementById('msgOverlay').onclick = (e) => {
   }
 };
 
-renderFeed();
+loadMessages();
+setInterval(loadMessages, 15000);
 
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
