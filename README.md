@@ -1,8 +1,8 @@
 # 🎓 Graduation Day Countdown
 
 A live countdown to **22 October 2026, midnight** — with rotating photos, a Matrix rain
-background, the *Final Countdown* soundtrack on loop, and a scrolling guestbook where
-classmates leave messages.
+background, the *Final Countdown* soundtrack on loop, and a scrolling message wall where
+classmates leave encouragement for each other.
 
 **Live site:** https://aims-project-countdown.pages.dev/
 **Original repo:** https://github.com/efandresena/aims-project-countdown
@@ -15,10 +15,10 @@ classmates leave messages.
 |---|---|
 | `index.html` | Page structure |
 | `style.css` | All styling and the responsive layout |
-| `app.js` | Countdown logic, photos, music, guestbook |
+| `app.js` | Countdown logic, photos, music, message wall |
 | `images/rotating/` | Background photos (`img-001.jpg` … `img-049.jpg`) |
 | `audio/` | Three MP3s that play on loop |
-| `functions/api/messages.js` | Cloudflare Function — saves and reads guestbook messages |
+| `functions/api/messages.js` | Cloudflare Function — saves and reads message wall messages |
 | `schema.sql` | The database table definition |
 
 No build step, no framework, no dependencies. It's plain HTML/CSS/JS.
@@ -38,7 +38,7 @@ python3 -m http.server 8080
 
 Open <http://localhost:8080>.
 
-> **Heads-up:** the guestbook will be empty locally, because the database only exists
+> **Heads-up:** the message wall will be empty locally, because the database only exists
 > in Cloudflare. Everything else (countdown, photos, music) works fine offline.
 
 ---
@@ -121,8 +121,15 @@ const songFiles = [
 ];
 ```
 
-They play one after another and loop forever. Keep files reasonably compressed
-(around 4 MB each is fine) — every visitor downloads the whole playlist.
+They play one after another, then start over from the first track. Keep files
+reasonably compressed (around 4 MB each is fine) — every visitor downloads the whole
+playlist.
+
+> **Don't add the `loop` attribute to the `<audio>` tag.** It looks harmless, but it
+> makes the browser repeat a single track forever, so the JavaScript `ended` handler
+> never fires and only the first song is ever heard. The playlist wraps around on its
+> own in `playNextSong()`. If a track fails to load, the `error` listener skips to the
+> next one so the music never stalls.
 
 > The "click anywhere to start" screen isn't decoration. Every browser blocks
 > automatic audio until the visitor interacts with the page, so that first click is
@@ -171,7 +178,7 @@ The quickest route if you want your own version with your own database.
 
 ### 4. Connect the database
 
-This is the step people miss — without it, the guestbook returns an error.
+This is the step people miss — without it, the message wall returns an error.
 
 1. Go to your Pages project → **Settings** → **Functions**
 2. Under **D1 database bindings** → **Add binding**
@@ -180,11 +187,11 @@ This is the step people miss — without it, the guestbook returns an error.
 5. Save, then redeploy from the **Deployments** tab
 
 Your site is now live on a `https://YOUR-PROJECT.pages.dev` address with a working
-guestbook.
+message wall.
 
 ---
 
-## How the guestbook works
+## How the message wall works
 
 `app.js` sends a `GET` to `/api/messages` on load and every 15 seconds after.
 The Cloudflare Function in `functions/api/messages.js` answers it, reading and
@@ -193,7 +200,7 @@ writing to the `DB` D1 binding. Posting a message sends a `POST` with `{ name, t
 Names are capped at 50 characters and messages at 500. All text is escaped before
 being displayed, so pasted HTML can't break the page.
 
-There's no login and no rate limiting, which is fine for a guestbook between
+There's no login and no rate limiting, which is fine for a message wall between
 classmates. If it ever gets spammed, add a check to the `POST` handler in
 `functions/api/messages.js`.
 
@@ -246,7 +253,7 @@ commit.
 
 ## Notes and limitations
 
-- **Guestbook entries can't be deleted** from the UI. Clear them by hand:
+- **Message wall entries can't be deleted** from the UI. Clear them by hand:
   `DELETE FROM messages;` in the D1 console.
 - **No timezone on the countdown.** Every visitor sees the countdown in their own
   local time, so it won't read the same in Tananarive and Lisbon.

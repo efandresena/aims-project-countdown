@@ -65,13 +65,18 @@ const motivationalQuotes = [
 
 
 const reminders = [
-  "Congratulations on your graduation! 🎓",
-  "You did it! All your hard work paid off!",
-  "Thanks for the amazing journey!",
-  "Proud of everything you've accomplished!",
-  "Here's to your bright future!",
-  "Well done, graduate!",
-  "Celebrate your success today!",
+  "You've got this. Keep going! 💪",
+  "Every hour counts. Make it count!",
+  "One step at a time. You're closer than you think.",
+  "Don't give up. The finish line is in sight!",
+  "Small progress every day adds up fast.",
+  "Stay focused. You've worked too hard to stop now.",
+  "Rest when you need to, then go again.",
+  "Your hard work will pay off. Trust the process.",
+  "Breathe, focus, and keep moving forward.",
+  "You're doing better than you realise.",
+  "No regrets. Give it everything you've got!",
+  "The countdown is on. Make every moment count.",
 ];
 
 
@@ -102,7 +107,7 @@ function updateDisplay() {
 
 
   if (t.total === 0) {
-    document.querySelector('.timer').innerHTML = '<div class="times-up">🎓 CONGRATULATIONS GRADUATE! 🎓</div>';
+    document.querySelector('.timer').innerHTML = '<div class="times-up">🎓 YOU MADE IT! 🎓</div>';
   }
 
   const totalMs = TARGET - START;
@@ -148,11 +153,16 @@ let songIndex = 0;
 
 function playNextSong() {
   bgAudio.src = songFiles[songIndex];
+  bgAudio.currentTime = 0;
   bgAudio.play().catch(() => {});
   songIndex = (songIndex + 1) % songFiles.length;
 }
 
 bgAudio.addEventListener('ended', playNextSong);
+bgAudio.addEventListener('error', () => {
+  if (!started) return;
+  setTimeout(() => { if (started && bgAudio.paused) playNextSong(); }, 1000);
+});
 
 function startAudio() {
   if (started) return;
@@ -297,7 +307,7 @@ window.addEventListener('resize', resizeMatrix);
 function drawMatrix() {
   ctx.fillStyle = 'rgba(5, 5, 8, 0.05)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#0f0';
+  ctx.fillStyle = '#f00';
   ctx.font = '12px monospace';
   for (let i = 0; i < drops.length; i++) {
     const char = String.fromCharCode(0x30A0 + Math.random() * 96);
