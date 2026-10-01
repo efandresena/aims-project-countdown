@@ -105,7 +105,7 @@ function updateDisplay() {
   document.getElementById('seconds').textContent = pad(t.seconds);
 
   if (t.total === 0) {
-    document.querySelector('.timer').innerHTML = '<div class="times-up">🎓 YOU MADE IT! 🎓</div>';
+    document.querySelector('.timer').innerHTML = '<div class="times-up">🎓 DEADLINE REACHED! 🎓</div>';
   }
 }
 
@@ -117,7 +117,7 @@ function renderJourney() {
   track.querySelectorAll('.mark').forEach(el => el.remove());
 
   if (span <= 0) {
-    caption.textContent = '🎓 The wait is over. Well done!';
+    caption.textContent = '🎓 The deadline has passed.';
     return;
   }
 
@@ -210,11 +210,14 @@ document.addEventListener('click', startAudio, { once: true });
 document.addEventListener('touchstart', startAudio, { once: true });
 document.addEventListener('keydown', startAudio, { once: true });
 
-const VOL_KEY = 'graduation_volume';
+const VOL_KEY = 'countdown_volume';
+const LEGACY_VOL_KEY = 'graduation_volume';
 const muteBtn = document.getElementById('muteBtn');
 const volumeSlider = document.getElementById('volumeSlider');
 let muted = false;
-let volume = Math.min(100, Math.max(0, parseInt(localStorage.getItem(VOL_KEY) || '35', 10)));
+let volume = Math.min(100, Math.max(0, parseInt(
+  localStorage.getItem(VOL_KEY) || localStorage.getItem(LEGACY_VOL_KEY) || '35', 10
+)));
 volumeSlider.value = String(volume);
 
 function applyVolume() {

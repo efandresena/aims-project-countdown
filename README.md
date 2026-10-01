@@ -1,8 +1,8 @@
-# 🎓 Graduation Day Countdown
+# Final Countdown
 
-A live countdown to **22 October 2026, midnight** — with rotating photos, a red Matrix
-rain background, the *Final Countdown* soundtrack, a milestone timeline, and volume
-controls.
+A live countdown to a submission deadline of **22 October 2026, midnight** — with rotating
+photos, a red Matrix rain background, the *Final Countdown* soundtrack, a milestone
+timeline, and volume controls.
 
 **Live site:** https://aims-project-countdown.pages.dev/
 **Original repo:** https://github.com/efandresena/aims-project-countdown
@@ -44,7 +44,7 @@ Everything works offline, including the music and photos.
 ## What's on screen
 
 - **Countdown** — days, hours, minutes, seconds to 22 October 2026
-- **The Road Ahead** — a timeline of the months between today and graduation, with a
+- **The Road Ahead** — a timeline of the months between today and the deadline, with a
   caption counting down to the next milestone. There is deliberately **no percentage
   bar**, because we never knew when the countdown officially began, so any percentage
   would be made up.
@@ -248,4 +248,4 @@ commit.
 
 ---
 
-Built by the AIMS Class of 2026 🎓
+Built by the AIMS Class of 2026
