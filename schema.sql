@@ -1,6 +1,0 @@
-CREATE TABLE IF NOT EXISTS messages (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  text TEXT NOT NULL,
-  created_at TEXT DEFAULT (datetime('now'))
-);

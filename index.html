@@ -37,11 +37,12 @@
       </div>
     </div>
 
-    <div class="progress-section">
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
+    <div class="journey">
+      <p class="journey-label">The Road Ahead</p>
+      <div class="journey-track" id="journeyTrack">
+        <div class="journey-line"></div>
       </div>
-      <p class="progress-text" id="progressText">0% complete</p>
+      <p class="journey-caption" id="journeyCaption"></p>
     </div>
 
     <div class="reminder" id="reminder"></div>
@@ -60,20 +61,9 @@
 
   <audio id="bgMusic" preload="auto" playsinline style="display:none"></audio>
 
-  <div class="message-feed" id="messageFeed">
-    <div class="feed-title">💬 Message Wall</div>
-    <div class="feed-scroll" id="feedScroll"></div>
-  </div>
-
-  <button id="sendMsgBtn" class="send-btn">✍️</button>
-
-  <div id="msgOverlay" class="overlay hidden">
-    <div class="overlay-content">
-      <h2>Leave a Message</h2>
-      <input id="msgName" class="msg-input" placeholder="Your name" maxlength="50" />
-      <textarea id="msgText" class="msg-textarea" placeholder="Write an encouragement, a thought, or a message to your teacher, friends, or anyone you wish..." rows="3" maxlength="500"></textarea>
-      <button id="submitMsg" class="btn">Send 💬</button>
-    </div>
+  <div class="audio-panel">
+    <input type="range" id="volumeSlider" class="volume" min="0" max="100" value="35" aria-label="Volume" />
+    <button id="muteBtn" class="mute-btn" aria-label="Mute or unmute">🔊</button>
   </div>
 
   <script src="app.js"></script>

@@ -1,5 +1,4 @@
 const TARGET = new Date('2026-10-22T00:00:00');
-const START = new Date('2026-05-12T00:00:00');
 let started = false;
 
 
@@ -105,16 +104,50 @@ function updateDisplay() {
   document.getElementById('minutes').textContent = pad(t.minutes);
   document.getElementById('seconds').textContent = pad(t.seconds);
 
-
   if (t.total === 0) {
     document.querySelector('.timer').innerHTML = '<div class="times-up">🎓 YOU MADE IT! 🎓</div>';
   }
+}
 
-  const totalMs = TARGET - START;
-  const elapsed = totalMs - t.total;
-  const pct = Math.min(100, Math.max(0, (elapsed / totalMs) * 100));
-  document.getElementById('progressFill').style.width = pct.toFixed(2) + '%';
-  document.getElementById('progressText').textContent = pct.toFixed(1) + '% complete';
+function renderJourney() {
+  const now = new Date();
+  const span = TARGET - now;
+  const track = document.getElementById('journeyTrack');
+  const caption = document.getElementById('journeyCaption');
+  track.querySelectorAll('.mark').forEach(el => el.remove());
+
+  if (span <= 0) {
+    caption.textContent = '🎓 The wait is over. Well done!';
+    return;
+  }
+
+  const marks = [];
+  let cursor = new Date(now.getFullYear(), now.getMonth(), 1);
+  while (cursor < TARGET) {
+    const next = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+    if (next > now && next < TARGET) {
+      marks.push({ date: next, label: next.toLocaleString('en-GB', { month: 'short' }) });
+    }
+    cursor = next;
+  }
+  marks.push({ date: new Date(TARGET), label: '🎓' });
+
+  marks.forEach((m, i) => {
+    const raw = ((m.date - now) / span) * 100;
+    const pct = Math.min(95, Math.max(3, raw));
+    const el = document.createElement('div');
+    el.className = 'mark' + (i === marks.length - 1 ? ' mark-end' : '');
+    el.style.left = pct + '%';
+    el.innerHTML = `<span class="mark-dot"></span><span class="mark-label">${m.label}</span>`;
+    track.appendChild(el);
+  });
+
+  const nextMark = marks[0];
+  const days = Math.ceil((nextMark.date - now) / 86400000);
+  caption.textContent =
+    nextMark.label === '🎓'
+      ? `🎓 ${days} day${days === 1 ? '' : 's'} to go`
+      : `${nextMark.label} in ${days} day${days === 1 ? '' : 's'}`;
 }
 
 function initBackground() {
@@ -168,15 +201,46 @@ function startAudio() {
   if (started) return;
   started = true;
   document.getElementById('startOverlay').classList.add('hidden');
-  playNextSong();
   if (!tickCtx) tickCtx = new (window.AudioContext || window.webkitAudioContext)();
+  applyVolume();
+  playNextSong();
 }
 
 document.addEventListener('click', startAudio, { once: true });
 document.addEventListener('touchstart', startAudio, { once: true });
 document.addEventListener('keydown', startAudio, { once: true });
 
+const VOL_KEY = 'graduation_volume';
+const muteBtn = document.getElementById('muteBtn');
+const volumeSlider = document.getElementById('volumeSlider');
+let muted = false;
+let volume = Math.min(100, Math.max(0, parseInt(localStorage.getItem(VOL_KEY) || '35', 10)));
+volumeSlider.value = String(volume);
+
+function applyVolume() {
+  const effective = muted ? 0 : volume / 100;
+  bgAudio.volume = effective;
+  const silent = effective === 0;
+  muteBtn.textContent = silent ? '🔇' : '🔊';
+  muteBtn.classList.toggle('muted', silent);
+  muteBtn.setAttribute('aria-pressed', String(silent));
+}
+
+volumeSlider.addEventListener('input', () => {
+  volume = parseInt(volumeSlider.value, 10);
+  muted = false;
+  localStorage.setItem(VOL_KEY, String(volume));
+  applyVolume();
+});
+
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  applyVolume();
+});
+
 function playTick() {
+  const level = muted ? 0 : (volume / 100) * 0.08;
+  if (level === 0) return;
   try {
     if (!tickCtx) tickCtx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = tickCtx.createOscillator();
@@ -185,7 +249,7 @@ function playTick() {
     gain.connect(tickCtx.destination);
     osc.type = 'sine';
     osc.frequency.setValueAtTime(800, tickCtx.currentTime);
-    gain.gain.setValueAtTime(0.08, tickCtx.currentTime);
+    gain.gain.setValueAtTime(level, tickCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, tickCtx.currentTime + 0.04);
     osc.start(tickCtx.currentTime);
     osc.stop(tickCtx.currentTime + 0.04);
@@ -212,84 +276,6 @@ function updateQuote() {
   document.getElementById('motivationalText').textContent = `"${m.text}"`;
   document.getElementById('motivationalAuthor').textContent = `— ${m.author}`;
 }
-
-const feedScroll = document.getElementById('feedScroll');
-let feedAnimId = null;
-const API = '/api/messages';
-
-async function loadMessages() {
-  try {
-    const res = await fetch(API);
-    if (!res.ok) return;
-    const msgs = await res.json();
-    renderFeed(msgs);
-  } catch {}
-}
-
-function renderFeed(msgs) {
-  feedScroll.innerHTML = '';
-  if (!msgs || msgs.length === 0) return;
-  const inner = document.createElement('div');
-  inner.className = 'feed-scroll-inner';
-  const frag = document.createDocumentFragment();
-  msgs.forEach(m => {
-    const el = document.createElement('div');
-    el.className = 'feed-msg';
-    el.innerHTML = `<div class="feed-msg-name">${escHtml(m.name)}</div><div class="feed-msg-text">${escHtml(m.text)}</div>`;
-    frag.appendChild(el);
-  });
-  inner.appendChild(frag);
-  feedScroll.appendChild(inner);
-  const h = inner.scrollHeight;
-  inner.style.height = h + 'px';
-  let pos = 0;
-  if (feedAnimId) cancelAnimationFrame(feedAnimId);
-  function animate() {
-    pos += 0.3;
-    if (pos >= h + feedScroll.clientHeight) {
-      pos = 0;
-    }
-    inner.style.transform = `translateY(${Math.min(pos, h)}px)`;
-    feedAnimId = requestAnimationFrame(animate);
-  }
-  animate();
-}
-
-function escHtml(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
-document.getElementById('sendMsgBtn').onclick = () => {
-  document.getElementById('msgOverlay').classList.remove('hidden');
-};
-
-document.getElementById('submitMsg').onclick = async () => {
-  const name = document.getElementById('msgName').value.trim();
-  const text = document.getElementById('msgText').value.trim();
-  if (!name || !text) return;
-  try {
-    await fetch(API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, text }),
-    });
-  } catch {}
-  document.getElementById('msgName').value = '';
-  document.getElementById('msgText').value = '';
-  document.getElementById('msgOverlay').classList.add('hidden');
-  loadMessages();
-};
-
-document.getElementById('msgOverlay').onclick = (e) => {
-  if (e.target === e.currentTarget) {
-    document.getElementById('msgOverlay').classList.add('hidden');
-  }
-};
-
-loadMessages();
-setInterval(loadMessages, 15000);
 
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
@@ -321,13 +307,17 @@ setInterval(drawMatrix, 60);
 initBackground();
 
 updateDisplay();
+renderJourney();
 updateQuote();
 updateReminder();
+applyVolume();
 
 setInterval(() => {
   updateQuote();
   updateReminder();
 }, 60000);
+
+setInterval(renderJourney, 60000);
 
 setInterval(() => {
   updateDisplay();
